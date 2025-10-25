@@ -8,27 +8,30 @@ void SetTimeOfDay(TimeOfDay newTime) {
     timeOfDay = newTime;
 }
 void SetTimeOfDay(const char* timeName) {
-    if (timeName == nullptr) {
-        timeOfDay = UNKNOWN;
+    timeOfDay = UNKNOWN;
+
+    if (!timeName) {
         return;
     }
-    switch (timeName[0]) {
-    case 'D':
-    case 'd':
-        if (NuStrICmp(timeName, "DAWN") == 0) {
-            timeOfDay = DAWN;
-        } else if (NuStrICmp(timeName, "DUSK") == 0) {
-            timeOfDay = DUSK;
-        }
-        break;
+
+    switch (static_cast<unsigned char>(timeName[0])) {
     case 'N':
     case 'n':
         if (NuStrICmp(timeName, "NOON") == 0) {
             timeOfDay = NOON;
         }
+        return;
+    case 'D':
+    case 'd':
+        if (NuStrICmp(timeName, "DAWN") == 0) {
+            timeOfDay = DAWN;
+            return;
+        }
+        if (NuStrICmp(timeName, "DUSK") == 0) {
+            timeOfDay = DUSK;
+        }
         break;
     default:
-        timeOfDay = UNKNOWN;
         break;
     }
 }
