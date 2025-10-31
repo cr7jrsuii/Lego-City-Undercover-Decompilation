@@ -38,9 +38,8 @@ foreach (SOURCE ${SOURCES_COMBINED})
   file(APPEND ${SOURCES_OUTPUT_FILE} "${SOURCE}\n")
 endforeach()
 
-set(NN_SDK_MAJOR 4)
-set(NN_SDK_MINOR 4)
-set(NN_SDK_PATCH 1)
+set(NN_SDK 1.3.1)
+set(NN_SDK  1.3.1)
 set(NN_SDK_TYPE "Release")
 
 target_include_directories(lcuswitch PRIVATE src)
