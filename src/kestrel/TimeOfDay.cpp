@@ -1,5 +1,4 @@
 #include "TimeOfDay.h"
-#include "nu2api/nuString.h"
 
 namespace CityTimeOfDay {
 static TimeOfDay timeOfDay = UNKNOWN;

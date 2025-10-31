@@ -1,5 +1,7 @@
 #pragma once
 
+int NuStrICmp(const char* s1, const char* s2);
+
 namespace CityTimeOfDay {
 enum TimeOfDay : int { NOON = 0, DAWN = 1, DUSK = 2, UNKNOWN = 3 };
 
