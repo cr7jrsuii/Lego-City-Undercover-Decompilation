@@ -5,7 +5,6 @@
 import argparse
 import os
 import subprocess
-import time
 
 from common import setup_common as setup
 from setup import get_build_dir

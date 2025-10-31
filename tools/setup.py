@@ -2,112 +2,30 @@
 
 import argparse
 import hashlib
-from pathlib import Path
-import subprocess
-import tempfile
-import urllib.request
-from typing import Optional
-from common import setup_common as setup
+import json
+import os
+import platform
 import shutil
-import difflib
+import subprocess
+import tarfile
+import tempfile
+import urllib.error
+import urllib.parse
+import urllib.request
+from pathlib import Path
+from typing import Optional
+
+from common import setup_common as setup
+from common.util.config import get_repo_root
+
+with open(f"{os.path.dirname(os.path.realpath(__file__))}/cache-version.json") as file:
+    cache = json.load(file)
 
 TARGET_PATH = setup.get_target_path()
 TARGET_ELF_PATH = setup.get_target_elf_path()
+CACHE_REPO_RELEASE_URL = f"{cache['urlPrefix']}/{cache['version']}"
 TARGET_UNCOMPRESSED_NSO_PATH = setup.config.get_versioned_data_path(setup.config.get_default_version()) / 'main.uncompressed.nso'
-
-PATCH_SOURCE_DIR = setup.ROOT / "toolchain/patches/generate"
-PATCH_DEST_DIR = setup.ROOT / "toolchain/patches"
-TOOLCHAIN_DIR = setup.ROOT / "toolchain/clang-4.0.1/include/c++/v1"
-
-
-def file_sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def generate_diff(source: Path, target: Path, diff_path: Path, checksums_path: Path):
-    original_lines = source.read_text().splitlines(keepends=True)
-    modified_lines = target.read_text().splitlines(keepends=True)
-    diff = list(difflib.unified_diff(original_lines, modified_lines, fromfile=source.name, tofile=target.name))
-
-    diff_path.write_text("".join(diff))
-    checksums_path.write_text(f"before: {file_sha256(source)}\nafter: {file_sha256(target)}\n")
-
-
-def apply_diff(original: Path, diff_file: Path):
-    result = subprocess.run(
-        ["patch", "-N", str(original), str(diff_file)],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True
-    )
-
-    if result.returncode == 0:
-        return
-    elif result.returncode == 1:
-        combined_output = (result.stdout + result.stderr).lower()
-        if ("reversed (or previously applied) patch detected" in combined_output or
-            "skip" in combined_output or
-            "ignoring" in combined_output):
-            # its fine
-            return
-        else:
-            raise RuntimeError(f"Patch failed with output:\n{result.stdout}\n{result.stderr}")
-    else:
-        raise RuntimeError(f"Patch command failed with code {result.returncode}:\n{result.stdout}\n{result.stderr}")
-
-
-
-def is_diff_applied(original: Path, expected_hash: str) -> bool:
-    return file_sha256(original) == expected_hash
-
-def patch_clang(remake_diffs=False):
-    redownloaded_clang = False
-
-    if PATCH_SOURCE_DIR.exists():
-        for src in PATCH_SOURCE_DIR.iterdir():
-            if not src.is_file():
-                continue
-
-            dst = TOOLCHAIN_DIR / src.name
-            diff_file = PATCH_DEST_DIR / f"{src.name}.diff"
-            checksum_file = PATCH_DEST_DIR / f"{src.name}.sha256"
-
-            if remake_diffs and not redownloaded_clang:
-                clang_path = setup.ROOT / "toolchain/clang-4.0.1"
-                if clang_path.exists():
-                    print(">>> Removing old clang toolchain")
-                    shutil.rmtree(clang_path)
-                print(">>> Re-downloading clang toolchain")
-                setup.set_up_compiler("4.0.1")
-                redownloaded_clang = True
-
-                generate_diff(dst, src, diff_file, checksum_file)
-
-            print(f">>> Applying patch: {src.name}")
-            apply_diff(dst, diff_file)
-
-    else:
-        for diff_file in PATCH_DEST_DIR.glob("*.diff"):
-            dst_name = diff_file.stem
-            dst = TOOLCHAIN_DIR / dst_name
-            print(f">>> Applying patch: {dst_name}")
-            apply_diff(dst, diff_file)
-
-    print(">>> Clang patched successfully")
-
-
-def check_diff_applied_status():
-    status = {}
-    for diff_file in PATCH_DEST_DIR.glob("*.diff"):
-        dst_name = diff_file.stem
-        target_file = TOOLCHAIN_DIR / dst_name
-        checksum_file = PATCH_DEST_DIR / f"{dst_name}.sha256"
-        if not checksum_file.exists():
-            status[dst_name] = False
-            continue
-        expected_hash = checksum_file.read_text().splitlines()[-1].split("after: ")[-1]
-        status[dst_name] = is_diff_applied(target_file, expected_hash)
-    return status
+LIBCXX_SRC_URL = "https://releases.llvm.org/3.9.1/libcxx-3.9.1.src.tar.xz"
 
 
 def prepare_executable(original_nso: Optional[Path]):
@@ -152,17 +70,101 @@ def prepare_executable(original_nso: Optional[Path]):
     if not TARGET_UNCOMPRESSED_NSO_PATH.is_file() or file_sha256(TARGET_UNCOMPRESSED_NSO_PATH) != UNCOMPRESSED_HASH:
         setup.fail("Internal error while exporting uncompressed NSO (uncompressed NSO either doesn't exist or has an incorrect hash); please report")
 
+
+def check_download_url_updated():
+    if not exists_toolchain_file("cache-version-url.txt"):
+        return True
+    with open(f"{get_repo_root()}/toolchain/cache-version-url.txt", "r+") as f:
+        data = f.read()
+        if data != CACHE_REPO_RELEASE_URL:
+            return True
+    return False
+
+
+def file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def get_build_dir():
     return setup.ROOT / "build"
 
+
+def exists_toolchain_file(file_path_rel):
+    return os.path.isfile(f"{get_repo_root()}/toolchain/{file_path_rel}")
+
+
+def setup_project_tools():
+
+    def exists_tool(tool_name, check_symlink=True):
+        return os.path.isfile(f"{get_repo_root()}/tools/{tool_name}") or (check_symlink and os.path.islink(f"{get_repo_root()}/tools/{tool_name}"))
+
+    def update_current_cache_url():
+        with open(f"{get_repo_root()}/toolchain/cache-version-url.txt", "w") as f:
+            f.write(CACHE_REPO_RELEASE_URL)
+
+    if check_download_url_updated():
+        print("Old toolchain files found. Replacing them with ones from the latest release")
+        if exists_tool("check", False):
+            os.remove(f"{get_repo_root()}/tools/check")
+        if exists_tool("decompme", False):
+            os.remove(f"{get_repo_root()}/tools/decompme")
+        if exists_tool("listsym", False):
+            os.remove(f"{get_repo_root()}/tools/listsym")
+        if exists_toolchain_file("bin/clang"):
+            shutil.rmtree(f"{get_repo_root()}/toolchain/bin")
+
+    if not exists_tool("check"):
+        os.symlink(f"{get_repo_root()}/toolchain/bin/check", f"{get_repo_root()}/tools/check")
+    if not exists_tool("decompme"):
+        os.symlink(f"{get_repo_root()}/toolchain/bin/decompme", f"{get_repo_root()}/tools/decompme")
+    if not exists_tool("listsym"):
+        os.symlink(f"{get_repo_root()}/toolchain/bin/listsym", f"{get_repo_root()}/tools/listsym")
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+
+        if not exists_toolchain_file("libcxx-include/__config"):
+            print(">>> Downloading llvm-3.9 libc++ headers...")
+            path = tmpdir + "/libcxx-3.9.1.src.tar.xz"
+            urllib.request.urlretrieve(LIBCXX_SRC_URL, path)
+            print(">>> Extracting libc++ headers...")
+            with tarfile.open(path) as f:
+                f.extractall(tmpdir, filter='tar')
+            shutil.copytree(f"{tmpdir}/libcxx-3.9.1.src/include", f"{get_repo_root()}/toolchain/libcxx-include", dirs_exist_ok=True)
+
+        if not exists_tool("check") or not exists_tool("decompme") or not exists_tool("listsym") or not exists_toolchain_file("bin/clang") or not exists_toolchain_file("bin/ld.lld"):
+
+            if os.path.isdir(get_build_dir()):
+                shutil.rmtree(get_build_dir())
+                update_current_cache_url()
+                return
+
+            target = f"{platform.machine()}-{platform.system()}"
+            update_current_cache_url()
+            print("Done")
+
+            path = tmpdir + f"/LCUDecomp-binaries_{target}"
+            try:
+                print(">>> Downloading clang, lld and viking...")
+                url = CACHE_REPO_RELEASE_URL + urllib.parse.quote(f"/LCUDecomp-binaries_{target}.tar.xz")
+                urllib.request.urlretrieve(url, path)
+                print(">>> Extracting tools...")
+                with tarfile.open(path) as f:
+                    f.extractall(f"{get_repo_root()}/toolchain/", filter='tar')
+            except urllib.error.HTTPError:
+                input(f"Prebuilt binaries not found for platform: {target}.")  # Do you want to build llvm, clang, lld and viking from source? (Press enter to accept)")
+                return
+                build_tools_from_source(tmpdir)
+            update_current_cache_url()
+
+
 def create_build_dir():
-    build_dir = setup.ROOT / "build"
+    build_dir = get_build_dir()
     if build_dir.is_dir():
         print(">>> build directory already exists: nothing to do")
         return
 
     subprocess.check_call(
-        "cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=toolchain/ToolchainNX64.cmake -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -B build/".split(" "))
+        ['cmake', '-GNinja', '-DCMAKE_BUILD_TYPE=RelWithDebInfo', '-DCMAKE_TOOLCHAIN_FILE=toolchain/ToolchainNX64.cmake', '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache', '-B', str(build_dir)])
     print(">>> created build directory")
 
 
@@ -170,15 +172,12 @@ def main():
     parser = argparse.ArgumentParser("setup.py", description="Set up the decompilation project")
     parser.add_argument("original_nso", type=Path, help="Path to the original NSO, compressed or not)", nargs="?")
     parser.add_argument("--project-only", action="store_true", help="Disable original NSO setup")
-    parser.add_argument("--remake-diffs", action="store_true", help="Regenerate diff files for patched files stored in toolchain/patches/generate")
     args = parser.parse_args()
 
-    setup.install_viking()
+    setup_project_tools()
     if not args.project_only:
         prepare_executable(args.original_nso)
-    setup.set_up_compiler("4.0.1")
     create_build_dir()
-    patch_clang(remake_diffs=args.remake_diffs)
 
 
 if __name__ == "__main__":

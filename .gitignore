@@ -16,13 +16,20 @@ __pycache__/
 main
 dist/
 build/
+build-*/
 bin/
 
 # IDEs
 .idea/
 .vscode/
-.DS_Store
+.vs
 .cache/
+.DS_Store
+/cmake-build-*
+compile_commands.json
+.clangd
+manifest.json
+.lite_project.lua
 
 # IDA
 *.id0
@@ -45,6 +52,10 @@ perf.data.old
 
 # Tooling
 /toolchain/clang-*
+!/toolchain/clang-include
+toolchain/libcxx-include
+toolchain/include
+toolchain/cache-version-url.txt
 tools/check
 tools/listsym
 tools/decompme

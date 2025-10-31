@@ -18,15 +18,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-file(GLOB_RECURSE SOURCES_GAME ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/*.c ${PROJECT_SOURCE_DIR}/src/*.hpp ${PROJECT_SOURCE_DIR}/src/*.h ${PROJECT_SOURCE_DIR}/lib/windows.cpp)
+file(GLOB_RECURSE SOURCES_GAME ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/*.c ${PROJECT_SOURCE_DIR}/src/*.hpp ${PROJECT_SOURCE_DIR}/src/*.h)
 
-
-set(FINAL_SOURCES ${SOURCES_GAME})
-
-
-list(APPEND FINAL_SOURCES ${UNITY_SOURCES})
-
-add_executable(lcuswitch ${FINAL_SOURCES})
+add_executable(lcuswitch ${SOURCES_GAME})
 
 # Writing sources to a file so build.py script knows the sources
 set(SOURCES_OUTPUT_FILE "${CMAKE_BINARY_DIR}/.build_sources")
@@ -39,8 +33,11 @@ foreach (SOURCE ${SOURCES_COMBINED})
 endforeach()
 
 set(NN_SDK 1.3.1)
-set(NN_SDK  1.3.1)
+set(NN_SDK 1.3.1)
 set(NN_SDK_TYPE "Release")
+
+include_directories(lib)
+include_directories(lib/aarch64)
 
 target_include_directories(lcuswitch PRIVATE src)
 target_include_directories(lcuswitch PUBLIC lib/nnheaders/include)
@@ -64,4 +61,3 @@ target_compile_options(lcuswitch PRIVATE -Wno-deprecated)
 target_compile_options(lcuswitch PRIVATE -Wno-sign-compare)
 
 add_definitions(-D SAFETY_CHECKS)
-
