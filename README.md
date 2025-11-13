@@ -1,4 +1,15 @@
 # Lego City Undercover Decompilation
+
+[![Code Progress]][progress] [![Discord Badge]][discord]
+
+[Code Progress]: https://decomp.dev/Nintendocustom/Lego-City-Undercover-Decompilation/1.0.3.svg?mode=shield&measure=code&label=Code
+
+[progress]: https://decomp.dev/Nintendocustom/Lego-City-Undercover-Decompilation
+
+[Discord Badge]: https://img.shields.io/discord/1437530203411714191?color=%237289DA&logo=discord&logoColor=%23FFFFFF
+
+[discord]: https://discord.com/invite/AyFjHz5EaT
+
 **This repository does not contain game assets and cannot be used to play the game.**
 
 ## Resources
@@ -14,16 +25,12 @@ the code, decompile functions/classes, improve readability of functions or fix n
 - improve README.md
 - update BUILDING.md and CONTRIBUTING.md
 - add setup guide, explaination for ./tools 
-- verify compiler version
 - update BUILDING.md
 - add GitHub actions for linting and building
 - fix lint.py
-- Create Discord server(?)
-- create a structure for the project based on the symbols
+- create a file structure for the functions/classes based on the symbols
 - Code style guidelines
-- add progress tracking to description using GitHub actions
 - Build project using GitHub actions and verify against binary
-- file structure for functions/classes and the whole decompilation
 
 ## Why Nintendo Switch Edition?
 The Nintendo Switch Edition has symbols, making it a good base for decompilation. The Wii U Edition doesn't have symbols
