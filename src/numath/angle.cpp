@@ -44,80 +44,20 @@ float NuAngWrapRads(float angle) {
 }
 float NuAngAddRads(float a, float b) {
     float sum = a + b;
-
-    while (sum > PI) {
-        sum -= PI * 2;
-    }
-    while (-PI >= sum) {
-        sum += PI * 2;
-    }
-    return sum;
+    return NuAngWrapRads(sum);
 }
 float NuAngSubRads(float a, float b) {
     float difference = a - b;
-
-    while (difference > PI) {
-        difference -= PI * 2;
-    }
-    while (-PI >= difference) {
-        difference += PI * 2;
-    }
-    return difference;
+    return NuAngWrapRads(difference);
 }
 
 void NuAngVecAddRads(NUVEC& out, NUVEC const& a, NUVEC const& b) {
-    float angle = a.x + b.x;
-    while (angle > PI) {
-        angle -= PI * 2;
-    }
-    while (angle <= -PI) {
-        angle += PI * 2;
-    }
-    out.x = angle;
-
-    angle = a.y + b.y;
-    while (angle > PI) {
-        angle -= PI * 2;
-    }
-    while (angle <= -PI) {
-        angle += PI * 2;
-    }
-    out.y = angle;
-
-    angle = a.z + b.z;
-    while (angle > PI) {
-        angle -= PI * 2;
-    }
-    while (angle <= -PI) {
-        angle += PI * 2;
-    }
-    out.z = angle;
+    out.x = NuAngAddRads(a.x, b.x);
+    out.y = NuAngAddRads(a.y, b.y);
+    out.z = NuAngAddRads(a.z, b.z);
 }
 void NuAngVecSubRads(NUVEC& out, NUVEC const& a, NUVEC const& b) {
-    float angle = a.x - b.x;
-    while (angle > PI) {
-        angle -= PI * 2;
-    }
-    while (angle <= -PI) {
-        angle += PI * 2;
-    }
-    out.x = angle;
-
-    angle = a.y - b.y;
-    while (angle > PI) {
-        angle -= PI * 2;
-    }
-    while (angle <= -PI) {
-        angle += PI * 2;
-    }
-    out.y = angle;
-
-    angle = a.z - b.z;
-    while (angle > PI) {
-        angle -= PI * 2;
-    }
-    while (angle <= -PI) {
-        angle += PI * 2;
-    }
-    out.z = angle;
+    out.x = NuAngSubRads(a.x, b.x);
+    out.y = NuAngSubRads(a.y, b.y);
+    out.z = NuAngSubRads(a.z, b.z);
 }
