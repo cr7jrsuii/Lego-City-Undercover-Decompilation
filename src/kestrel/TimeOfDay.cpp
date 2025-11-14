@@ -1,4 +1,4 @@
-#include "TimeOfDay.h"
+#include "kestrel/TimeOfDay.h"
 
 namespace CityTimeOfDay {
 static TimeOfDay timeOfDay = UNKNOWN;

@@ -1,4 +1,4 @@
-#include "Score.h"
+#include "nu2api/Score.h"
 
 const Score Score::NullScore;
 Score::Score() : m_value(0), m_total(0) {}

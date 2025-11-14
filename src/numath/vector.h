@@ -1,5 +1,6 @@
 #pragma once
-#include "types.h"
+
+#include "numath/types.h"
 
 // 3D Vector Functions
 void NuVecNeg(NUVEC* out, NUVEC const* in);

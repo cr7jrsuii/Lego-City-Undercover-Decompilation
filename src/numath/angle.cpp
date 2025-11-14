@@ -1,4 +1,5 @@
-#include "angle.h"
+#include "numath/angle.h"
+
 #include <algorithm>
 
 constexpr float PI = 3.1415927f;

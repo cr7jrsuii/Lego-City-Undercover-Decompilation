@@ -1,4 +1,5 @@
 #pragma once
+
 #include "numath/types.h"
 
 int NuAngAdd(int a, int b);

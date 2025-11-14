@@ -8,4 +8,4 @@ void Initialise();
 
 namespace RandomNumberGenerator {
 float GetRandom(unsigned int offset, float index_base, float min, float max);
-}
+}  // namespace RandomNumberGenerator

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <numath/types.h>
 
 // Initialization

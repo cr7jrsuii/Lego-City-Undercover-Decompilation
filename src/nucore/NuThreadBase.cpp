@@ -1,4 +1,5 @@
-#include "NuThreadBase.h"
+#include "nucore/NuThreadBase.h"
+
 #include <cstring>
 
 NuThreadBase::NuThreadBase(const NuThreadCreateParameters& params) {

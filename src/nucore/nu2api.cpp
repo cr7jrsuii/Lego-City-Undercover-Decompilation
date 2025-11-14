@@ -1,4 +1,5 @@
 #include "nucore/nu2api.h"
+
 #include <cstdio>
 
 unsigned int NuStrCmp(const char* param_1, const char* param_2);

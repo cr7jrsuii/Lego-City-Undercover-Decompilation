@@ -10,7 +10,7 @@ public:
     using ThreadFn = void* (*)(void*);
 
     NuThreadBase(const NuThreadCreateParameters& params);
-    ~NuThreadBase() ;
+    ~NuThreadBase();
 
     const char* GetDebugName() const;
     void* GetLocalStorage(unsigned int index) const;

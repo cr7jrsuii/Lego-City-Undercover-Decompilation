@@ -1,5 +1,6 @@
 #pragma once
-#include "types.h"
+
+#include "numath/types.h"
 
 int NuLineLineIntersect(NUVEC const* p1, NUVEC const* p2, NUVEC const* p3, NUVEC const* p4, float* mua,
                         float* mub);

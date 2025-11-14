@@ -1,6 +1,6 @@
 #include "nucore/NuCheckSum.h"
-#include "nucore/thirdparty/md5.h"
 
+#include "nucore/thirdparty/md5.h"
 #include <cstdio>
 
 NuCheckSum::NuCheckSum(int size, const void* data) {
