@@ -46,23 +46,27 @@ void CountdownTimer::Update(float deltaTime) {
         m_progress = m_elapsedTime / m_duration;
     }
 }
-
 bool CountdownTimer::CheckCountdown(float deltaTime) {
-    if (!m_isRunning) {
-        return false;
-    }
-    if (!m_isPaused) {
-        float original_duration = m_duration;
-        m_elapsedTime += deltaTime;
-        if (!(original_duration > 0.0f && m_elapsedTime < original_duration)) {
-            m_progress = 1.0f;
-            m_elapsedTime = original_duration;
-            m_isRunning = false;
+    if (IsRunning()) {
+        if (!m_isPaused) {
+            float duration = m_duration;
+            m_elapsedTime += deltaTime;
+
+            if (!(duration > 0.0f && m_elapsedTime < duration)) {
+                m_progress = 1.0f;
+                m_elapsedTime = duration;
+                m_isRunning = false;
+                return true;
+            }
+
+            m_progress = m_elapsedTime / duration;
+        }
+
+        if (Finished()) {
             return true;
         }
-        m_progress = m_elapsedTime / original_duration;
     }
-    return m_progress >= 1.0f;
+    return false;
 }
 bool CountdownTimer::IsRunning() const {
     return m_isRunning;
