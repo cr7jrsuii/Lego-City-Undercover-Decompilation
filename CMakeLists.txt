@@ -51,7 +51,7 @@ target_compile_options(lcuswitch PRIVATE -fsigned-char)
 target_compile_options(lcuswitch PRIVATE -Wall -Wextra -Wdeprecated)
 target_compile_options(lcuswitch PRIVATE -Wextra-semi)
 # target_compile_options(lcuswitch PRIVATE -fno-inline -fno-inline-functions)
-target_compile_options(lcuswitch PRIVATE -fno-builtin)
+# target_compile_options(lcuswitch PRIVATE -fno-builtin)
 target_compile_options(lcuswitch PRIVATE -fPIC)
 
 # Disable some warnings that are unavoidable
