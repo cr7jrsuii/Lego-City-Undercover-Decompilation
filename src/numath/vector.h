@@ -20,14 +20,14 @@ void NuVecMin(NUVEC* out, NUVEC const* v1, NUVEC const* v2);
 float NuVecMag(NUVEC const* v);
 float NuVecMagSqr(NUVEC const* v);
 float NuVecMagXZ(NUVEC const* v);
-float NuVecNorm(NUVEC* out, NUVEC const* in);
+void NuVecNorm(NUVEC* out, NUVEC const* in);
 float NuVecNormEx(NUVEC* out, NUVEC const* in);
 
 // Distance & Interpolation
 float NuVecDist(NUVEC const* p1, NUVEC const* p2, NUVEC* outDelta);
 float NuVecDistSqr(NUVEC const* p1, NUVEC const* p2, NUVEC* outDelta);
 float NuVecXZDist(NUVEC const* p1, NUVEC const* p2, NUVEC* outDelta);
-float NuVecXZDistSqr(NUVEC const* p1, NUVEC const* p2, NUVEC* outDelta);
+float NuVecXZDistSqr(NUVEC const* p1, NUVEC const* p2, NUVEC* out);
 void NuVecLerp(NUVEC* out, NUVEC const* start, NUVEC const* end, float t);
 
 // Transformations & Rotations
@@ -71,7 +71,7 @@ void NuVec4Max(NUVEC4* out, NUVEC4 const* v1, NUVEC4 const* v2);
 void NuVec4Min(NUVEC4* out, NUVEC4 const* v1, NUVEC4 const* v2);
 float NuVec4Mag(NUVEC4 const* v);
 float NuVec4MagSqr(NUVEC4 const* v);
-void NuVec4Lerp(NUVEC4* out, NUVEC4 const* start, NUVEC const* end, float t);
+void NuVec4Lerp(NUVEC4* out, NUVEC4 const* start, NUVEC4 const* end, float t);
 void NuVec4ToNuHalfVec4(NUVEC4 const* in, NUHALFVEC4* out);
 void NuHalfVec4ToNuVec4(NUHALFVEC4 const* in, NUVEC4* out);
 bool NuVec4CompareTolerance(NUVEC4 const* v1, NUVEC4 const* v2, float tolerance);

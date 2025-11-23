@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 struct NUVEC {
     float x;
@@ -14,16 +15,17 @@ struct NUVEC4 {
 struct NUMTX {
     float m[4][4];
 };
+
 struct NUHALFVEC {
-    unsigned short x;
-    unsigned short y;
-    unsigned short z;
+    uint16_t x;
+    uint16_t y;
+    uint16_t z;
 };
 struct NUHALFVEC4 {
-    unsigned short x;
-    unsigned short y;
-    unsigned short z;
-    unsigned short w;
+    uint16_t x;
+    uint16_t y;
+    uint16_t z;
+    uint16_t w;
 };
 struct NUPLANE {
     NUVEC normal;
