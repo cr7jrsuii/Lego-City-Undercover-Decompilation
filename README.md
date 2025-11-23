@@ -15,22 +15,21 @@
 ## Resources
 This project requires a `main` dumped from the latest *Lego City Undercover - EU* update, v1.0.3
 (The US version 1.0.2 likely also works for decompilation, but is untested and has a different file hash).
-The Japanese version isn't currently supported, because it was compiled with a different/unknown compiler version.
+The Japanese version isn't currently supported, because it was compiled with a different/unknown compiler version
+similar to the other 1.0.0 versions.
 
 # How to help
 If you want to help with the decompilation, then you can do either the todos below, check for possible todo comments in
-the code, decompile functions/classes, improve readability of functions or fix non-matching functions.
+the code, decompile functions/classes, improve readability of functions or fix non-matching functions. You can also
+check out the [CONTRIBUTING.md](docs/CONTRIBUTING.md) for more information on how to contribute.
 
 # Todo
-- improve README.md
-- update BUILDING.md and CONTRIBUTING.md
-- add setup guide, explaination for ./tools 
-- update BUILDING.md
 - add GitHub actions for linting and building
 - fix lint.py
 - create a file structure for the functions/classes based on the symbols
 - Code style guidelines
 - Build project using GitHub actions and verify against binary
+- (if possible) improve progress tracking
 
 ## Why Nintendo Switch Edition?
 The Nintendo Switch Edition has symbols, making it a good base for decompilation. The Wii U Edition doesn't have symbols

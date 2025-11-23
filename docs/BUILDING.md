@@ -1,15 +1,25 @@
 # Building
 
-The decomp toolchain was created for Linux & MacOS users. While it isn't a hard requirement, if you're running Windows its advised that you [setup WSL](https://learn.microsoft.com/en-us/windows/wsl/install) with an Ubuntu-like distro for the easiest setup.
+The decomp toolchain was created for Linux & MacOS. While it isn't a hard requirement, if you're running Windows its
+advised that you [setup WSL](https://learn.microsoft.com/en-us/windows/wsl/install) with an Ubuntu-like distro for the
+easiest setup.
+The setup should take less than 10 minutes if you follow the instructions below, except for dumping the game's
+executable, which may take longer depending on your familiarity with homebrew and dumping games.
 
-The instructions below assume you're running a form of Linux (WSL or native).
+## For Windows users
+
+If you're using Windows, it's highly recommended to use WSL (Windows Subsystem for Linux) with an Ubuntu-like
+distribution for the best compatibility.
+Follow the [official Microsoft guide](https://learn.microsoft.com/en-us/windows/wsl/install) to set up WSL on your
+system. Once WSL is installed, you can follow the Linux instructions below within your WSL environment.
+Now you can go on with the steps below.
 
 ## 1. Set up dependencies
 
 * Python 3.6 or newer with [pip](https://pip.pypa.io/en/stable/installation/)
 * Ninja
 * CMake 3.13+
-  * If you are on Ubuntu 18.04, you must
+    * If you are on Ubuntu 18.04, you must
       first [update CMake by using the official CMake APT repository](https://apt.kitware.com/).
 * ccache (to speed up builds)
 * llvm-objdump
@@ -32,30 +42,21 @@ example [ncurses5-compat-libs](https://aur.archlinux.org/packages/ncurses5-compa
 
 Additionally, you'll also need:
 
-* A Rust toolchain ([follow the instructions here](https://www.rust-lang.org/tools/install))
-* The following Python modules: `pip install capstone colorama cxxfilt pyelftools ansiwrap watchdog python-Levenshtein toml pyyaml`
+* The following Python modules that can be installed with the following command:
+  `pip install capstone colorama cxxfilt pyelftools ansiwrap watchdog python-Levenshtein toml pyyaml`
 
 ## 2. Set up the project
 
 1. Clone this repository. If you are using WSL, please clone the repo *inside* WSL, *not* on the Windows side (for performance reasons).
+   Run `git clone --recurse-submodules https://github.com/Nintendocustom/Lego-City-Undercover-Decompilation.git`
 
-2. Run `git submodule update --init --recursive`
-
-3. Acquire the **original v1.0.17 `main` NSO executable**.
-    1. Acquire an NSP dump of v1.0.17. [Dumping guide](https://zeldamods.org/wiki/Help:Dumping_games#Switch)
-    2. Setup [hactool](https://github.com/SciresM/hactool) and put your dumped `title.keys` in `$HOME/.switch`.
-    3. Run `hactool [path to the NSP] -t pfs0 --outdir=extracted`.
-    4. `cd` into `extracted`.
-    5. Find the largest NCA.
-    6. Run `hactool [path to largest NCA] -t nca --exefsdir=exefs`
-    7. `exefs/main` is the NSO.
-
-4. Run `tools/setup.py [path to the NSO]`
+2. Acquire the **original v1.0.3 EU `main` NSO executable** using
+   the [Dumping guide](https://zeldamods.org/wiki/Help:Dumping_games#Switch).
+3. Run `python3 tools/setup.py [path to the NSO]`
     * This will:
         * install tools/check to check for differences in decompiled code
         * convert the executable if necessary
-        * set up [Clang 4.0.1](https://releases.llvm.org/download.html#4.0.1) by downloading it from the official LLVM website
-        * patch Clang to match Nintendo's changes
+      * set up [Clang 3.9.1](https://releases.llvm.org/download.html#3.9.1)
         * create a build directory in `build/`
     * If something goes wrong, follow the instructions given to you by the script.
     * If you wish to use a CMake generator that isn't Ninja, use `--cmake_backend` to specify it.
