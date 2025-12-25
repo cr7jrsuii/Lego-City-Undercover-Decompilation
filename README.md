@@ -1,8 +1,10 @@
 # Lego City Undercover Decompilation
 
-[![Code Progress]][progress] [![Discord Badge]][discord]
+[![Code Progress]][progress] [![Function Progress]][progress] [![Discord Badge]][discord]
 
 [Code Progress]: https://decomp.dev/Nintendocustom/Lego-City-Undercover-Decompilation/1.0.3.svg?mode=shield&measure=code&label=Code
+
+[Function Progress]: https://decomp.dev/Nintendocustom/Lego-City-Undercover-Decompilation.svg?mode=shield&measure=matched_functions&label=Functions
 
 [progress]: https://decomp.dev/Nintendocustom/Lego-City-Undercover-Decompilation
 
