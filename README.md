@@ -26,7 +26,7 @@ the code, decompile functions/classes, improve readability of functions or fix n
 check out the [CONTRIBUTING.md](docs/CONTRIBUTING.md) for more information on how to contribute.
 
 # Todo
-- add GitHub actions for linting and fix lint.py
+- fix lint.py
 - create a file structure for the functions/classes based on the symbols
 - Code style guidelines
 - (if possible) improve progress tracking
