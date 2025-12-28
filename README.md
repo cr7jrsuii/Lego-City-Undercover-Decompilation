@@ -4,7 +4,7 @@
 
 [Code Progress]: https://decomp.dev/Nintendocustom/Lego-City-Undercover-Decompilation/1.0.3.svg?mode=shield&measure=code&label=Code
 
-[Function Progress]: https://decomp.dev/Nintendocustom/Lego-City-Undercover-Decompilation.svg?mode=shield&measure=matched_functions&label=Functions
+[Function Progress]: https://decomp.dev/Nintendocustom/Lego-City-Undercover-Decompilation/1.0.3.svg?mode=shield&measure=matched_functions&label=Functions
 
 [progress]: https://decomp.dev/Nintendocustom/Lego-City-Undercover-Decompilation
 
@@ -26,11 +26,9 @@ the code, decompile functions/classes, improve readability of functions or fix n
 check out the [CONTRIBUTING.md](docs/CONTRIBUTING.md) for more information on how to contribute.
 
 # Todo
-- add GitHub actions for linting and building
-- fix lint.py
+- add GitHub actions for linting and fix lint.py
 - create a file structure for the functions/classes based on the symbols
 - Code style guidelines
-- Build project using GitHub actions and verify against binary
 - (if possible) improve progress tracking
 
 ## Why Nintendo Switch Edition?

@@ -1,0 +1,86 @@
+name: Compile and verify functions
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  compile_verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      - name: Check for W-state functions
+        run: |
+          if awk -F',' 'NR>1 && $2=="W"' data/lcuswitch_functions.csv | grep -q .; then
+            echo "::error::Function list should not contain functions with Quality=W!"
+            echo "Found the following lines:"
+            awk -F',' 'NR>1 && $2=="W"' data/lcuswitch_functions.csv
+            exit 1
+          fi
+      - name: Set up dependencies
+        run: |
+          sudo apt update && sudo apt install -y python3-pip ninja-build cmake ccache xdelta3 clang libssl-dev python-is-python3 curl
+          wget https://archive.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2_amd64.deb && sudo dpkg -i libtinfo5_6.3-2_amd64.deb && rm -f libtinfo5_6.3-2_amd64.deb
+      - name: Set up python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+      - name: Set up python package dependencies
+        run: pip install capstone colorama cxxfilt pyelftools watchdog python-Levenshtein toml
+      - name: Set up cache for toolchain
+        uses: actions/cache@v5
+        with:
+          key: tools_libs
+          path: |
+            toolchain/bin
+            toolchain/libcxx-include
+            toolchain/cache-version-url.txt
+      - name: Download main.nso from secret
+        env:
+          PRIVATE_MAIN_URL: ${{ secrets.PRIVATE_MAIN_URL }}
+          EXPECTED_SHA256: cf65ba2016505d83b9a0622704521651566b87510e60ebe0d4413546f2ea59c1
+        run: |
+          if [ -z "$PRIVATE_MAIN_URL" ]; then
+            echo "Secret not available, skipping download"
+            exit 0
+          fi
+          
+          set +x
+          if ! curl -s -f --retry 5 --retry-delay 2 --retry-all-errors -o lcu-main.nso "$PRIVATE_MAIN_URL" 2>/dev/null; then
+            echo "::error::Failed to download binary"
+            exit 1
+          fi
+          
+          if ! echo "$EXPECTED_SHA256  lcu-main.nso" | sha256sum -c - >/dev/null 2>&1; then
+            echo "::error::Hash verification failed - downloaded file does not match expected hash"
+            rm -f lcu-main.nso
+            exit 1
+          fi
+          
+          echo "Binary downloaded and verified successfully"
+      - name: Run Setup
+        run: |
+          if [ -f "lcu-main.nso" ]; then
+            echo "Binary found. Running Full Setup..."
+            tools/setup.py lcu-main.nso
+          else
+            echo "Binary not found. Running Basic Setup..."
+            tools/setup.py --project
+          fi
+      - name: Build project
+        run: tools/build.py
+      - name: Verify function states
+        if: ${{ hashFiles('lcu-main.nso') != '' }}
+        run: |
+          var="$(tools/check 2> errfile || true)"
+          if [[ "$(cat errfile)" == "OK" ]]; then
+            exit 0
+          else
+            cat errfile | tr '\n' '\f' | sed 's/Stack backtrace:.*//' | tr '\f' '\n'
+            exit 1
+          fi
