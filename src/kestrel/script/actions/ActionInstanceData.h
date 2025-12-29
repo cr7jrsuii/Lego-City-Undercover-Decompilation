@@ -71,7 +71,7 @@ public:
     int m_Pad;
     int m_HasInput;
 
-    virtual ~ActionInstanceData() = default;
+    virtual ~ActionInstanceData();
     virtual const char* GetName() const = 0;
     virtual void GetInputs(SCmdParams& params) const { params.SanityCheck(); }
     virtual void GetOutputs(SCmdParams& params) const { params.SanityCheck(); }
