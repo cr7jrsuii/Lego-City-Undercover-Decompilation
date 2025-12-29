@@ -14,6 +14,7 @@ struct ScriptContext;
 enum ActionState {
     ACTION_FINISHED = 1,
     ACTION_YIELD = 5,
+    ACTION_UNKNOWN_7 = 7,
 };
 
 enum ScriptVarType {
