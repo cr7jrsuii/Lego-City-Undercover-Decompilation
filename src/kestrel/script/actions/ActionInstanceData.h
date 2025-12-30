@@ -22,6 +22,7 @@ enum ScriptVarType {
     SV_INT = 1,
     SV_FLOAT = 2,
     SV_STRING = 5,
+    SV_GIZMO = 31,
 };
 
 struct SCmdParamEntry {
