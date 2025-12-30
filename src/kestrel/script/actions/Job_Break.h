@@ -2,9 +2,9 @@
 
 #include "kestrel/script/actions/ActionInstanceData.h"
 
-class  SAction_Job_Break : public ActionInstanceData {
+class SAction_Job_Break : public ActionInstanceData {
 public:
-    ~ SAction_Job_Break() override;
+    ~SAction_Job_Break() override;
     const char* GetName() const override;
     void GetInputs(SCmdParams& params) const override;
     void GetOutputs(SCmdParams& params) const override;
