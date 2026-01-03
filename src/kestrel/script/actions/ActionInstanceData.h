@@ -45,6 +45,12 @@ struct SCmdParams {
 
     void AddParam(ScriptVarType type) {
         int idx = m_CurrentParamIndex;
+
+        if (idx < 0) {
+            m_CurrentParamIndex = 0;
+            idx = 0;
+        }
+
         SCmdParamEntry* entry = &m_Args[idx];
 
         entry->m_Type = type;
