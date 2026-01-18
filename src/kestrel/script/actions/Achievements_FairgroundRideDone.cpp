@@ -5,8 +5,8 @@ const char* SAction_Achievements_FairgroundRideDone::GetName() const {
 }
 void SAction_Achievements_FairgroundRideDone::GetInputs(SCmdParams& params) const {
     params.SanityCheck();
-    params.AddParam(SV_FLOAT);
-    params.AddParam(SV_FLOAT);
+    params.AddParam(SV_NUMBER);
+    params.AddParam(SV_NUMBER);
 }
 void SAction_Achievements_FairgroundRideDone::GetOutputs(SCmdParams& params) const {
     ActionInstanceData::GetOutputs(params);

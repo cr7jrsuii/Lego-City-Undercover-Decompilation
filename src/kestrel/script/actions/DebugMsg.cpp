@@ -5,7 +5,7 @@ const char* SActionDebugMsg::GetName() const {
 }
 void SActionDebugMsg::GetInputs(SCmdParams& params) const {
     params.SanityCheck();
-    params.AddParam(SV_STRING);
+    params.AddParam(SV_TEXT);
 }
 void SActionDebugMsg::GetOutputs(SCmdParams& params) const {
     ActionInstanceData::GetOutputs(params);

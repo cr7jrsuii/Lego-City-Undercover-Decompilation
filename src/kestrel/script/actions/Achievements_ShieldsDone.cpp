@@ -5,7 +5,7 @@ const char* SAction_Achievements_ShieldsDone::GetName() const {
 }
 void SAction_Achievements_ShieldsDone::GetInputs(SCmdParams& params) const {
     params.SanityCheck();
-    params.AddParam(SV_FLOAT);
+    params.AddParam(SV_NUMBER);
 }
 void SAction_Achievements_ShieldsDone::GetOutputs(SCmdParams& params) const {
     ActionInstanceData::GetOutputs(params);

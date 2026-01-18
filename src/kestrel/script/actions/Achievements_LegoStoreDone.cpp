@@ -5,7 +5,7 @@ const char* SAction_Achievements_LegoStoreDone::GetName() const {
 }
 void SAction_Achievements_LegoStoreDone::GetInputs(SCmdParams& params) const {
     params.SanityCheck();
-    params.AddParam(SV_FLOAT);
+    params.AddParam(SV_NUMBER);
 }
 void SAction_Achievements_LegoStoreDone::GetOutputs(SCmdParams& params) const {
     ActionInstanceData::GetOutputs(params);

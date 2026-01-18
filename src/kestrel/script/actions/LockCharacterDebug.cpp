@@ -5,7 +5,7 @@ const char* SAction_LockCharacterDebug::GetName() const {
 }
 void SAction_LockCharacterDebug::GetInputs(SCmdParams& params) const {
     params.SanityCheck();
-    params.AddParam(SV_STRING);
+    params.AddParam(SV_TEXT);
 }
 void SAction_LockCharacterDebug::GetOutputs(SCmdParams& params) const {
     ActionInstanceData::GetOutputs(params);

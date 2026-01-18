@@ -5,7 +5,7 @@ const char* SAction_Achievements_MarkChapterStart::GetName() const {
 }
 void SAction_Achievements_MarkChapterStart::GetInputs(SCmdParams& params) const {
     params.SanityCheck();
-    params.AddParam(SV_FLOAT);
+    params.AddParam(SV_NUMBER);
 }
 void SAction_Achievements_MarkChapterStart::GetOutputs(SCmdParams& params) const {
     ActionInstanceData::GetOutputs(params);
