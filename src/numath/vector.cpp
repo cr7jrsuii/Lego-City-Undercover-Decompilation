@@ -44,6 +44,19 @@ void NuVecInvScale(NUVEC* out, NUVEC const* in, float scale) {
     }
     NuVecScale(out, in, scale);
 }
+void NuVecCross(NUVEC* out, NUVEC const* v1, NUVEC const* v2) {
+    out->x = v1->y * v2->z - v1->z * v2->y;
+    out->y = v1->z * v2->x - v1->x * v2->z;
+    out->z = v1->x * v2->y - v1->y * v2->x;
+}
+void NuVecCrossRel(NUVEC* out, NUVEC const* p1, NUVEC const* p2, NUVEC const* ref) {
+    NUVEC v1;
+    NUVEC v2;
+
+    NuVecSub(&v1, p1, ref);
+    NuVecSub(&v2, p2, ref);
+    NuVecCross(out, &v1, &v2);
+}
 float NuVecDot(NUVEC const* v1, NUVEC const* v2) {
     return v1->x * v2->x + v1->y * v2->y + v1->z * v2->z;
 }
@@ -66,10 +79,91 @@ float NuVecMagSqr(NUVEC const* v) {
 float NuVecMagXZ(const NUVEC* v) {
     return NuFsqrt(v->x * v->x + v->z * v->z);
 }
+void NuVecNorm(NUVEC* out, NUVEC const* in) {
+    float mag = NuFsqrt(NuVecMagSqr(in));
+    float invMag;
+
+    if (mag > 0.0f) {
+        invMag = 1.0f / mag;
+    } else {
+        invMag = 0.0f;
+    }
+    out->x = in->x * invMag;
+    out->y = in->y * invMag;
+    out->z = in->z * invMag;
+}
+float NuVecNormEx(NUVEC* out, NUVEC const* in) {
+    float mag = NuFsqrt(NuVecMagSqr(in));
+    float invMag;
+
+    if (mag > 0.0f) {
+        invMag = 1.0f / mag;
+    } else {
+        invMag = 0.0f;
+    }
+    out->x = in->x * invMag;
+    out->y = in->y * invMag;
+    out->z = in->z * invMag;
+
+    return mag;
+}
+float NuVecDist(NUVEC const* p1, NUVEC const* p2, NUVEC* outDelta) {
+    NUVEC delta;
+    if (outDelta != nullptr) {
+        NuVecSub(outDelta, p1, p2);
+        return NuVecMag(outDelta);
+    }
+    NuVecSub(&delta, p1, p2);
+    return NuVecMag(&delta);
+}
+float NuVecDistSqr(NUVEC const* p1, NUVEC const* p2, NUVEC* outDelta) {
+    NUVEC delta;
+    if (outDelta != nullptr) {
+        NuVecSub(outDelta, p1, p2);
+        return NuVecMagSqr(outDelta);
+    }
+    NuVecSub(&delta, p1, p2);
+    return NuVecMagSqr(&delta);
+}
+float NuVecXZDist(NUVEC const* p1, NUVEC const* p2, NUVEC* outDelta) {
+    NUVEC delta;
+    if (outDelta != nullptr) {
+        outDelta->x = p1->x - p2->x;
+        outDelta->y = 0.0f;
+        outDelta->z = p1->z - p2->z;
+        return NuVecMag(outDelta);
+    }
+    delta.x = p1->x - p2->x;
+    delta.y = 0.0f;
+    delta.z = p1->z - p2->z;
+    return NuVecMag(&delta);
+}
+float NuVecXZDistSqr(NUVEC const* p1, NUVEC const* p2, NUVEC* out) {
+    NUVEC delta;
+    if (out != nullptr) {
+        out->x = p1->x - p2->x;
+        out->y = 0.0f;
+        out->z = p1->z - p2->z;
+        return NuVecMagSqr(out);
+    }
+    delta.x = p1->x - p2->x;
+    delta.y = 0.0f;
+    delta.z = p1->z - p2->z;
+    return NuVecMagSqr(&delta);
+}
 void NuVecLerp(NUVEC* out, NUVEC const* end, NUVEC const* start, float t) {
     out->x = (end->x - start->x) * t + start->x;
     out->y = (end->y - start->y) * t + start->y;
     out->z = (end->z - start->z) * t + start->z;
+}
+void NuVecMtxTransform(NUVEC* out, NUVEC const* v, NUMTX const* m) {
+    float x = v->x * m->m[0][0] + v->y * m->m[1][0] + v->z * m->m[2][0] + m->m[3][0];
+    float y = v->x * m->m[0][1] + v->y * m->m[1][1] + v->z * m->m[2][1] + m->m[3][1];
+    float z = v->x * m->m[0][2] + v->y * m->m[1][2] + v->z * m->m[2][2] + m->m[3][2];
+
+    out->x = x;
+    out->y = y;
+    out->z = z;
 }
 void NuVecRotateXOld(NUVEC* out, NUVEC const* in, int angle) {
     float angleCos = NuSinOld(angle + 16384);
