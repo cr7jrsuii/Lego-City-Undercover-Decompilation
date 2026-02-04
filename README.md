@@ -48,6 +48,5 @@ See [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 Special thanks to all the people of
 the [LEGO Star Wars: The Complete Saga decompilation](https://github.com/ttdecomp/saga).
 
-([https://github.com/ttdecomp/saga])
-This repository is based on the MinecraftLCE decomp ([GRAnimated/MinecraftLCE](https://github.com/GRAnimated/MinecraftLCE)) and
-Super Mario Odyssey decomp ([MonsterDruide1/OdysseyDecomp](https://github.com/MonsterDruide1/OdysseyDecomp)).
+This repository is based on the [MinecraftLCE decomp](https://github.com/GRAnimated/MinecraftLCE) and
+[Super Mario Odyssey decomp](https://github.com/MonsterDruide1/OdysseyDecomp).
