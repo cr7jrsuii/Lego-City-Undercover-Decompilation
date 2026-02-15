@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/Achievements_GraffitiDone.h"
+#include "kestrel/script/actions/SAction_Achievements_GraffitiDone.h"
 
 const char* SAction_Achievements_GraffitiDone::GetName() const {
     return "Achievements_GraffitiDone";

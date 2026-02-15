@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/Achievements_LegoStoreDone.h"
+#include "kestrel/script/actions/SAction_Achievements_LegoStoreDone.h"
 
 const char* SAction_Achievements_LegoStoreDone::GetName() const {
     return "Achievements_LegoStoreDone";

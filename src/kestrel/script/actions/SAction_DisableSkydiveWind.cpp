@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/DisableSkydiveWind.h"
+#include "kestrel/script/actions/SAction_DisableSkydiveWind.h"
 
 class SkyDiveAddon {
 public:

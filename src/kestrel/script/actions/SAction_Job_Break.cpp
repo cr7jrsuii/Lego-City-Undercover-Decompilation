@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/Job_Break.h"
+#include "kestrel/script/actions/SAction_Job_Break.h"
 
 const char* SAction_Job_Break::GetName() const {
     return "Job_Break";

@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/Achievements_FairgroundRideDone.h"
+#include "kestrel/script/actions/SAction_Achievements_FairgroundRideDone.h"
 
 const char* SAction_Achievements_FairgroundRideDone::GetName() const {
     return "Achievements_FairgroundRideDone";

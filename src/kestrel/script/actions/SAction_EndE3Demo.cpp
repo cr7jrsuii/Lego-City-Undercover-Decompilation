@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/EndE3Demo.h"
+#include "kestrel/script/actions/SAction_EndE3Demo.h"
 
 const char* SAction_EndE3Demo::GetName() const {
     return "EndE3Demo";

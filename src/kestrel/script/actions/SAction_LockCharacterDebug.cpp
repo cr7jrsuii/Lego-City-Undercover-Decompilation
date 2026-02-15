@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/LockCharacterDebug.h"
+#include "kestrel/script/actions/SAction_LockCharacterDebug.h"
 
 const char* SAction_LockCharacterDebug::GetName() const {
     return "LockCharacterDebug";

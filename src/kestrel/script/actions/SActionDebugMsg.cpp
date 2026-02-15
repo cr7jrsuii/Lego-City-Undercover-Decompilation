@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/DebugMsg.h"
+#include "kestrel/script/actions/SActionDebugMsg.h"
 
 const char* SActionDebugMsg::GetName() const {
     return "DebugMsg";

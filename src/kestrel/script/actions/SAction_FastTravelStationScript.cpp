@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/FastTravelStationScript.h"
+#include "kestrel/script/actions/SAction_FastTravelStationScript.h"
 
 const char* SAction_FastTravelStationScript::GetName() const {
     return "FastTravelStationScript";

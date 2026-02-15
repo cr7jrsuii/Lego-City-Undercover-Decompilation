@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/Achievements_ShieldsDone.h"
+#include "kestrel/script/actions/SAction_Achievements_ShieldsDone.h"
 
 const char* SAction_Achievements_ShieldsDone::GetName() const {
     return "Achievements_ShieldsDone";

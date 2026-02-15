@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/Achievements_MarkChapterComplete.h"
+#include "kestrel/script/actions/SAction_Achievements_MarkChapterComplete.h"
 
 const char* SAction_Achievements_MarkChapterComplete::GetName() const {
     return "Achievements_MarkChapterComplete";

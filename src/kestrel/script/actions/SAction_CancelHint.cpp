@@ -1,4 +1,4 @@
-#include "kestrel/script/actions/CancelHint.h"
+#include "kestrel/script/actions/SAction_CancelHint.h"
 
 void Hint_CancelCurrent(float);
 
