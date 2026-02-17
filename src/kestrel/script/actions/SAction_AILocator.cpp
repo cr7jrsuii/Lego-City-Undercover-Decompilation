@@ -13,6 +13,3 @@ void SAction_AILocator::GetOutputs(SCmdParams& params) const {
     params.SanityCheck();
     params.AddParam(SV_LOCATOR);
 }
-ActionState SAction_AILocator::Exec(ScriptContext& context) {
-    return ActionInstanceData::Exec(context);
-}
