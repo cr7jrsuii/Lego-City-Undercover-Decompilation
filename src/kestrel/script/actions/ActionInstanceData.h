@@ -20,6 +20,7 @@ enum ActionState {
 
 enum ScriptVarType {
     SV_GLOBAL = 0,
+    SV_UNKNOWN_1 = 1,
     SV_NUMBER = 2,
     SV_BOOL = 3,
     SV_TIMER = 4,
