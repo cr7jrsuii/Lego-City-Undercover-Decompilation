@@ -6,7 +6,7 @@ public:
 };
 
 const char* SAction_DisableSkydiveWind::GetName() const {
-    return " SAction_DisableSkydiveWind";
+    return "DisableSkydiveWind";
 }
 void SAction_DisableSkydiveWind::GetInputs(SCmdParams& params) const {
     ActionInstanceData::GetInputs(params);
