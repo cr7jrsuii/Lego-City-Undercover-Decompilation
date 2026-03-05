@@ -14,5 +14,4 @@ public:
     static unsigned int sm_AllHash;
     static unsigned int sm_PedestrianHash;
     static unsigned int sm_VehicleHash;
-
 };
