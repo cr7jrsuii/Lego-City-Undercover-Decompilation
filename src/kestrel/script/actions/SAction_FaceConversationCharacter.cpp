@@ -12,4 +12,3 @@ void SAction_FaceConversationCharacter::GetInputs(SCmdParams& params) const {
 void SAction_FaceConversationCharacter::GetOutputs(SCmdParams& params) const {
     ActionInstanceData::GetOutputs(params);
 }
-
