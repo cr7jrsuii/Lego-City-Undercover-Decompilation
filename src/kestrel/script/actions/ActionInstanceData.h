@@ -75,7 +75,7 @@ struct SCmdParams {
     SCmdParamEntry m_Args[64];  // 0x00 - 0x600: Array of 64 parameter entries
     int m_CurrentParamIndex;    // 0x600: Current index of arguments
 
-    void AddParam(ScriptVarType type) {
+    void AddParam(ScriptVarType type, const char* str = nullptr) {
         int idx = m_CurrentParamIndex;
 
         if (idx < 0) {
@@ -97,6 +97,8 @@ struct SCmdParams {
         }
 
         *dataPtr = 0;
+        entry->m_Data.m_String = const_cast<char*>(str);
+
         m_CurrentParamIndex++;
     }
     void SanityCheck() {
